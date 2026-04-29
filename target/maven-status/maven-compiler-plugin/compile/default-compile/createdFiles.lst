@@ -1,6 +1,0 @@
-com\moviebooking\controller\MovieController.class
-com\moviebooking\dto\MovieResponseDto.class
-com\moviebooking\MovieTicketApplication.class
-com\moviebooking\repository\MovieRepository.class
-com\moviebooking\entity\Movie.class
-com\moviebooking\config\DataSeederConfig.class
