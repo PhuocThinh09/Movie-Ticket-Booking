@@ -1,41 +1,19 @@
 package com.moviebooking.service;
 
-import com.moviebooking.dto.response.MovieResponseDto;
-import com.moviebooking.entity.Genre;
-import com.moviebooking.entity.Movie;
-import com.moviebooking.repository.MovieRepository;
-import org.springframework.stereotype.Service;
+import com.moviebooking.dto.request.MovieRequest;
+import com.moviebooking.dto.response.MovieResponse;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
-@Service
-public class MovieService {
+public interface MovieService {
 
-    private final MovieRepository movieRepository;
+    List<MovieResponse> getAllMovies();
 
-    public MovieService(MovieRepository movieRepository) {
-        this.movieRepository = movieRepository;
-    }
+    MovieResponse getMovieById(Long id);
 
-    public List<MovieResponseDto> getAllMovies() {
-        return movieRepository.findAll()
-                .stream()
-                .map(this::toResponseDto)
-                .toList();
-    }
+    MovieResponse createMovie(MovieRequest request);
 
-    private MovieResponseDto toResponseDto(Movie movie) {
-        String genreNames = movie.getGenres()
-                .stream()
-                .map(Genre::getName)
-                .collect(Collectors.joining(", "));
+    MovieResponse updateMovie(Long id, MovieRequest request);
 
-        return new MovieResponseDto(
-                movie.getId(),
-                movie.getTitle(),
-                movie.getDuration(),
-                genreNames
-        );
-    }
+    void deleteMovie(Long id);
 }
