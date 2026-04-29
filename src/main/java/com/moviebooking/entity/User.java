@@ -11,6 +11,19 @@ import java.util.Set;
 @Table(name = "users")
 public class User {
 
+
+    
+    @PrePersist
+protected void onCreate() {
+    createdAt = LocalDateTime.now();
+    updatedAt = LocalDateTime.now();
+}
+
+@PreUpdate
+protected void onUpdate() {
+    updatedAt = LocalDateTime.now();
+}
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

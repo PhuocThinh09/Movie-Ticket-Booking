@@ -9,6 +9,17 @@ import java.time.LocalDateTime;
 @Table(name = "rooms")
 public class Room {
 
+@PrePersist
+protected void onCreate() {
+    createdAt = LocalDateTime.now();
+    updatedAt = LocalDateTime.now();
+}
+
+@PreUpdate
+protected void onUpdate() {
+    updatedAt = LocalDateTime.now();
+}
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

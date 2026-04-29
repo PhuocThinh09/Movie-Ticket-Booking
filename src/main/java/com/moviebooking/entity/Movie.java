@@ -12,7 +12,6 @@ import java.util.Set;
 @Table(name = "movies")
 public class Movie {
 
-    // Khóa chính, tự tăng AUTO_INCREMENT
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -51,7 +50,7 @@ public class Movie {
 
     // Soft delete / active flag
     @Column(name = "is_active")
-    private Boolean isActive = true;
+    private Boolean active = true;
 
     // Thời điểm tạo
     @Column(name = "created_at")
@@ -71,6 +70,17 @@ public class Movie {
     private Set<Genre> genres = new HashSet<>();
 
     public Movie() {
+    }
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = LocalDateTime.now();
     }
 
     public Long getId() {
@@ -146,11 +156,11 @@ public class Movie {
     }
 
     public Boolean getActive() {
-        return isActive;
+        return active;
     }
 
     public void setActive(Boolean active) {
-        isActive = active;
+        this.active = active;
     }
 
     public LocalDateTime getCreatedAt() {
