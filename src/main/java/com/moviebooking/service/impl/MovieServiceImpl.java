@@ -9,6 +9,7 @@ import com.moviebooking.repository.GenreRepository;
 import com.moviebooking.repository.MovieRepository;
 import com.moviebooking.service.MovieService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.List;
@@ -32,6 +33,7 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<MovieResponse> getAllMovies() {
         return movieRepository.findByActiveTrue()
                 .stream()
@@ -40,12 +42,14 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public MovieResponse getMovieById(Long id) {
         Movie movie = findMovieById(id);
         return movieMapper.toResponse(movie);
     }
 
     @Override
+    @Transactional
     public MovieResponse createMovie(MovieRequest request) {
         validateCreateRequest(request);
 
@@ -60,6 +64,7 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
+    @Transactional
     public MovieResponse updateMovie(Long id, MovieRequest request) {
         Movie movie = findMovieById(id);
 
@@ -76,6 +81,7 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
+    @Transactional
     public void deleteMovie(Long id) {
         Movie movie = findMovieById(id);
 

@@ -6,7 +6,7 @@ import com.moviebooking.service.MovieService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import java.util.List;
 @RestController
 @RequestMapping("/api/movies")
 public class MovieController {
@@ -18,9 +18,10 @@ public class MovieController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getAllMovies() {
-        return ResponseEntity.ok(movieService.getAllMovies());
-    }
+    public ResponseEntity<List<MovieResponse>> getAllMovies() {
+    List<MovieResponse> movies = movieService.getAllMovies();
+    return ResponseEntity.ok(movies);
+}
 
     @GetMapping("/{id}")
     public ResponseEntity<MovieResponse> getMovieById(@PathVariable Long id) {

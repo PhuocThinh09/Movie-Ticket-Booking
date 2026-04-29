@@ -2,47 +2,58 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <title>Movies | Movie Ticket Booking</title>
 
-    <!-- Giúp trang hiển thị tốt trên nhiều kích thước màn hình -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Movie List</title>
-
-    <!-- Link tới file CSS -->
-    <link rel="stylesheet" href="/css/movies.css">
+    <!-- Link CSS -->
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-    <header class="page-header">
-        <div>
-            <h1>Movie Ticket Booking</h1>
-            <p>Browse available movies from the backend database</p>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container header-content">
+            <h1 class="logo">Movie Ticket Booking</h1>
+
+            <nav class="nav">
+                <a href="/index.html">Home</a>
+                <a href="/movies.html">Movies</a>
+            </nav>
         </div>
     </header>
 
+    <!-- Main content -->
     <main class="container">
-        <section class="toolbar">
-            <div>
-                <h2>Available Movies</h2>
-                <p id="movie-count">Loading movies...</p>
-            </div>
 
-            <button id="reload-btn" class="btn">
-                Reload
-            </button>
+        <!-- Tiêu đề trang -->
+        <section class="page-title">
+            <h2>Movies</h2>
+            <p>
+                This page loads movie data from the Spring Boot backend API.
+            </p>
         </section>
 
-        <!-- Khu vực hiển thị thông báo loading/error -->
-        <div id="message" class="message">
+        <!-- Loading state -->
+        <div id="loadingMessage" class="message">
             Loading movies...
         </div>
 
-        <!-- Khu vực render danh sách phim -->
-        <section id="movie-list" class="movie-grid">
-            <!-- JavaScript sẽ render movie card vào đây -->
+        <!-- Error state -->
+        <div id="errorMessage" class="message error hidden">
+        </div>
+
+        <!-- Empty state -->
+        <div id="emptyMessage" class="message hidden">
+            No movies found.
+        </div>
+
+        <!-- Nơi JavaScript render danh sách phim -->
+        <section id="movieList" class="movie-grid">
+            <!-- Movie cards will be rendered here by movies.js -->
         </section>
+
     </main>
 
-    <!-- Link tới file JavaScript -->
+    <!-- Link JavaScript. Đặt cuối body để HTML load xong trước -->
     <script src="/js/movies.js"></script>
 </body>
 </html>
