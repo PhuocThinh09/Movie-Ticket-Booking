@@ -1,35 +1,41 @@
 package com.moviebooking.service;
 
-import com.moviebooking.dto.MovieResponseDto;
+import com.moviebooking.dto.response.MovieResponseDto;
+import com.moviebooking.entity.Genre;
 import com.moviebooking.entity.Movie;
+import com.moviebooking.repository.MovieRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
-// Đánh dấu đây là service để xử lý logic nghiệp vụ
 @Service
 public class MovieService {
 
-    // Method lấy danh sách movie dummy
+    private final MovieRepository movieRepository;
+
+    public MovieService(MovieRepository movieRepository) {
+        this.movieRepository = movieRepository;
+    }
+
     public List<MovieResponseDto> getAllMovies() {
+        return movieRepository.findAll()
+                .stream()
+                .map(this::toResponseDto)
+                .toList();
+    }
 
-        // Giả lập dữ liệu như thể lấy từ database
-        List<Movie> movies = new ArrayList<>();
-        movies.add(new Movie( "Avengers: Endgame", 181, "Action"));
-        movies.add(new Movie( "Joker", 122, "Drama"));
-        movies.add(new Movie( "Frozen 2", 103, "Animation"));
+    private MovieResponseDto toResponseDto(Movie movie) {
+        String genreNames = movie.getGenres()
+                .stream()
+                .map(Genre::getName)
+                .collect(Collectors.joining(", "));
 
-        // Chuyển từ model Movie sang DTO để trả ra ngoài
-        List<MovieResponseDto> response = new ArrayList<>();
-        for (Movie movie : movies) {
-            response.add(new MovieResponseDto(
-                    movie.getId(),
-                    movie.getTitle(),
-                    movie.getGenre()
-            ));
-        }
-
-        return response;
+        return new MovieResponseDto(
+                movie.getId(),
+                movie.getTitle(),
+                movie.getDuration(),
+                genreNames
+        );
     }
 }

@@ -1,54 +1,82 @@
 package com.moviebooking.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
-// @Entity cho JPA biết class này sẽ được ánh xạ thành bảng trong database
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
+
+// Entity Movie ánh xạ với bảng movies trong MySQL
 @Entity
-
-// Tên bảng trong MySQL sẽ là movies
 @Table(name = "movies")
 public class Movie {
 
-    // Khóa chính của bảng movies
+    // Khóa chính, tự tăng AUTO_INCREMENT
     @Id
-
-    // ID tự tăng theo cơ chế AUTO_INCREMENT của MySQL
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Tên phim, bắt buộc có dữ liệu
+    // Tên phim, bắt buộc nhập
     @Column(name = "title", nullable = false, length = 255)
     private String title;
+
+    // Mô tả phim
+    @Column(name = "description", columnDefinition = "TEXT")
+    private String description;
 
     // Thời lượng phim, tính bằng phút
     @Column(name = "duration", nullable = false)
     private Integer duration;
 
-    // Thể loại phim
-    @Column(name = "genre", nullable = false, length = 100)
-    private String genre;
+    // Rating ví dụ: PG, PG-13, R, C13, C16
+    @Column(name = "rating", length = 10)
+    private String rating;
 
-    // Constructor rỗng là bắt buộc cho JPA/Hibernate
+    // Ngày phát hành
+    @Column(name = "release_date")
+    private LocalDate releaseDate;
+
+    // Trạng thái phim: COMING_SOON, NOW_SHOWING, ENDED
+    @Column(name = "status", length = 30)
+    private String status = "COMING_SOON";
+
+    // Link poster phim
+    @Column(name = "poster_url", length = 500)
+    private String posterUrl;
+
+    // Ngôn ngữ phim
+    @Column(name = "language", length = 50)
+    private String language;
+
+    // Soft delete / active flag
+    @Column(name = "is_active")
+    private Boolean isActive = true;
+
+    // Thời điểm tạo
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
+    // Thời điểm cập nhật
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
+
+    // Movie - Genre là quan hệ nhiều-nhiều thông qua bảng movie_genres
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "movie_genres",
+            joinColumns = @JoinColumn(name = "movie_id"),
+            inverseJoinColumns = @JoinColumn(name = "genre_id")
+    )
+    private Set<Genre> genres = new HashSet<>();
+
     public Movie() {
-    }
-
-    // Constructor dùng khi tạo movie mới trong code
-    public Movie(String title, Integer duration, String genre) {
-        this.title = title;
-        this.duration = duration;
-        this.genre = genre;
     }
 
     public Long getId() {
         return id;
     }
 
-    // Setter ID vẫn nên có để framework hoặc test có thể dùng khi cần
     public void setId(Long id) {
         this.id = id;
     }
@@ -61,6 +89,14 @@ public class Movie {
         this.title = title;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public Integer getDuration() {
         return duration;
     }
@@ -69,11 +105,75 @@ public class Movie {
         this.duration = duration;
     }
 
-    public String getGenre() {
-        return genre;
+    public String getRating() {
+        return rating;
     }
 
-    public void setGenre(String genre) {
-        this.genre = genre;
+    public void setRating(String rating) {
+        this.rating = rating;
+    }
+
+    public LocalDate getReleaseDate() {
+        return releaseDate;
+    }
+
+    public void setReleaseDate(LocalDate releaseDate) {
+        this.releaseDate = releaseDate;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getPosterUrl() {
+        return posterUrl;
+    }
+
+    public void setPosterUrl(String posterUrl) {
+        this.posterUrl = posterUrl;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+
+    public Boolean getActive() {
+        return isActive;
+    }
+
+    public void setActive(Boolean active) {
+        isActive = active;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public Set<Genre> getGenres() {
+        return genres;
+    }
+
+    public void setGenres(Set<Genre> genres) {
+        this.genres = genres;
     }
 }

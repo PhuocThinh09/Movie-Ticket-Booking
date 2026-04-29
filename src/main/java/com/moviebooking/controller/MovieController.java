@@ -1,6 +1,6 @@
 package com.moviebooking.controller;
 
-import com.moviebooking.dto.MovieResponseDto;
+import com.moviebooking.dto.response.MovieResponseDto;
 import com.moviebooking.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
